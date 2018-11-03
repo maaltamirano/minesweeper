@@ -14,11 +14,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Game {
-    private ArrayList<ArrayList<Field>> game;
+    private Field[][] game;
     private boolean isRunning;
     private boolean mouseDrag = false;
     private boolean firstClick = true;
@@ -101,7 +100,7 @@ public class Game {
         GridPane gridpane = new GridPane();
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
-                gridpane.add(getImageView(i, j), j, i);
+                gridpane.add(game[i][j].getImageView(), j, i);
             }
         }
 
@@ -145,9 +144,8 @@ public class Game {
     private void initialize() {
         fieldsToUncover = height * width - mines;
         flagsLeft = mines;
-        game = new ArrayList<>();
+        game = new Field[height][width];
         for (int i = 0; i < this.height; i++) {
-            game.add(new ArrayList<>());
             for (int j = 0; j < this.width; j++) {
                 initializeField(i, j);
             }
@@ -156,52 +154,52 @@ public class Game {
     }
 
     private void initializeField(int i, int j) {
-        game.get(i).add(new Field());
-        setMine(i, j, false);
-        setFlagged(i, j, false);
-        setCovered(i, j, true);
-        setAmountNeighboursThatAreMines(i, j, 0);
-        setImageView(i, j, new ImageView(field));
+        game[i][j] = new Field();
+        game[i][j].setMine(false);
+        game[i][j].setFlagged(false);
+        game[i][j].setCovered(true);
+        game[i][j].setAmountNeighboursThatAreMines(0);
+        game[i][j].setImageView(new ImageView(field));
         // Ist benötigt damit immer das Feld auf dem die Maus gerade ist
-        getImageView(i, j).setOnMouseDragEntered((EventHandler<MouseEvent>) event -> {
-            if (isRunning && isCovered(i, j) && !isFlagged(i, j) && event.getButton() == MouseButton.PRIMARY) {
+        game[i][j].getImageView().setOnMouseDragEntered((EventHandler<MouseEvent>) event -> {
+            if (isRunning && game[i][j].isCovered() && !game[i][j].isFlagged() && event.getButton() == MouseButton.PRIMARY) {
                 restartButton.setImage(restartO);
-                getImageView(i, j).setImage(fields[0]);
+                game[i][j].getImageView().setImage(fields[0]);
             }
             overField = true;
             mouseDrag = true;
         });
         // Ist benötigt um das Feld welches man gerade verlassen hat wieder zuzudecken
-        getImageView(i, j).setOnMouseDragExited((EventHandler<MouseEvent>) event -> {
-            if (isRunning && isCovered(i, j) && !isFlagged(i, j) && event.getButton() == MouseButton.PRIMARY) {
+        game[i][j].getImageView().setOnMouseDragExited((EventHandler<MouseEvent>) event -> {
+            if (isRunning && game[i][j].isCovered() && !game[i][j].isFlagged() && event.getButton() == MouseButton.PRIMARY) {
                 restartButton.setImage(restart);
-                getImageView(i, j).setImage(field);
+                game[i][j].getImageView().setImage(field);
             }
             overField = false;
             mouseDrag = false;
         });
         // Ist benötigt weil setOnMouseDrag nicht funktioniert wenn man die Maus nur um einen Pixel bewegt
-        getImageView(i, j).setOnMouseExited(event -> {
-            if (isRunning && isCovered(i, j) && !isFlagged(i, j) && event.getButton() == MouseButton.PRIMARY) {
-                getImageView(i, j).setImage(field);
+        game[i][j].getImageView().setOnMouseExited(event -> {
+            if (isRunning && game[i][j].isCovered() && !game[i][j].isFlagged() && event.getButton() == MouseButton.PRIMARY) {
+                game[i][j].getImageView().setImage(field);
             }
             overField = false;
         });
-        getImageView(i, j).setOnMouseEntered(event -> overField = true);
+        game[i][j].getImageView().setOnMouseEntered(event -> overField = true);
         // Ist benötigt weil setOnMouseDragEntered erst aktiviert wird wenn man die Maus bewegt
-        getImageView(i, j).setOnMousePressed(event -> {
+        game[i][j].getImageView().setOnMousePressed(event -> {
             overField = true;
-            if (isRunning && isCovered(i, j) && !isFlagged(i, j) && event.getButton() == MouseButton.PRIMARY) {
+            if (isRunning && game[i][j].isCovered() && !game[i][j].isFlagged() && event.getButton() == MouseButton.PRIMARY) {
                 restartButton.setImage(restartO);
-                getImageView(i, j).setImage(fields[0]);
+                game[i][j].getImageView().setImage(fields[0]);
             }
         });
         // Ist benötigt falls man nur auf ein Feld klickt ohne die Maus zu bewegen
-        getImageView(i, j).setOnMouseReleased(event -> {
+        game[i][j].getImageView().setOnMouseReleased(event -> {
             if (isRunning) {
                 restartButton.setImage(restart);
                 if (overField) {
-                    if (firstClick && event.getButton() == MouseButton.PRIMARY && !isFlagged(i, j)) {
+                    if (firstClick && event.getButton() == MouseButton.PRIMARY && !game[i][j].isFlagged()) {
                         firstClick(i, j);
                         firstClick = false;
                     }
@@ -213,9 +211,9 @@ public class Game {
             }
         });
         // Ist benötigt falls man die Maus bewegt und dann loslässt
-        getImageView(i, j).setOnMouseDragReleased(event -> {
+        game[i][j].getImageView().setOnMouseDragReleased(event -> {
             if (overField) {
-                if (firstClick && event.getButton() == MouseButton.PRIMARY && !isFlagged(i, j)) {
+                if (firstClick && event.getButton() == MouseButton.PRIMARY && !game[i][j].isFlagged()) {
                     firstClick(i, j);
                     firstClick = false;
                 }
@@ -293,11 +291,11 @@ public class Game {
     }
 
     private void restartField(int i, int j) {
-        setMine(i, j, false);
-        setFlagged(i, j, false);
-        setCovered(i, j, true);
-        setAmountNeighboursThatAreMines(i, j, 0);
-        getImageView(i, j).setImage(field);
+        game[i][j].setMine(false);
+        game[i][j].setFlagged(false);
+        game[i][j].setCovered(true);
+        game[i][j].setAmountNeighboursThatAreMines(0);
+        game[i][j].getImageView().setImage(field);
     }
 
     private void setMines(int mouseX, int mouseY) {
@@ -310,10 +308,10 @@ public class Game {
                 x = random.nextInt(this.height);
                 y = random.nextInt(this.width);
             } while (validateMineLocation(x, y, mouseX, mouseY));
-            setMine(x, y, true);
+            game[x][y].setMine(true);
             for (int[] neighbour : neighbours) {
                 try {
-                    setAmountNeighboursThatAreMines(x + neighbour[0], y + neighbour[1], getAmountNeighboursThatAreMines(x + neighbour[0], y + neighbour[1]) + 1);
+                    game[x + neighbour[0]][y + neighbour[1]].setAmountNeighboursThatAreMines(game[x + neighbour[0]][y + neighbour[1]].getAmountNeighboursThatAreMines() + 1);
                 } catch (IndexOutOfBoundsException ignored) {}
             }
         }
@@ -321,7 +319,7 @@ public class Game {
 
     private boolean validateMineLocation(int x, int y, int mouseX, int mouseY) {
 
-        if (isMine(x, y)) {
+        if (game[x][y].isMine()) {
             return true;
         }
 
@@ -353,7 +351,7 @@ public class Game {
                     flag(i, j);
                     break;
                 case MIDDLE:
-                    if (countFlaggedNeighbours(i, j) == getAmountNeighboursThatAreMines(i, j) && !isCovered(i, j)) {
+                    if (countFlaggedNeighbours(i, j) == game[i][j].getAmountNeighboursThatAreMines() && !game[i][j].isCovered()) {
                         uncoverNeighbours(i, j);
                     }
                     break;
@@ -366,7 +364,7 @@ public class Game {
         int amount = 0;
         for (int[] neighbour : neighbours) {
             try {
-                if (isFlagged(i + neighbour[0], j + neighbour[1])) {
+                if (game[i + neighbour[0]][j + neighbour[1]].isFlagged()) {
                     amount++;
                 }
             } catch (IndexOutOfBoundsException ignored) {}
@@ -378,10 +376,10 @@ public class Game {
         timer.stop();
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
-                if (isMine(i, j) && !isFlagged(i, j)) {
-                    getImageView(i, j).setImage(mine);
-                } else if (!isMine(i, j) && isFlagged(i, j)) {
-                    getImageView(i, j).setImage(wrongFlag);
+                if (game[i][j].isMine() && !game[i][j].isFlagged()) {
+                    game[i][j].getImageView().setImage(mine);
+                } else if (!game[i][j].isMine() && game[i][j].isFlagged()) {
+                    game[i][j].getImageView().setImage(wrongFlag);
                 }
             }
         }
@@ -394,7 +392,7 @@ public class Game {
         timer.stop();
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
-                if (isMine(i, j ) && !isFlagged(i, j)) {
+                if (game[i][j].isMine() && !game[i][j].isFlagged()) {
                     flag(i, j);
                 }
             }
@@ -405,19 +403,19 @@ public class Game {
     }
 
     private void uncover(int i, int j) {
-        if (isCovered(i, j) && !isFlagged(i, j)) {
-            if (isMine(i, j)) {
+        if (game[i][j].isCovered() && !game[i][j].isFlagged()) {
+            if (game[i][j].isMine()) {
                 lose();
-                getImageView(i, j).setImage(detonatedMine);
-                setCovered(i, j, false);
-            } else if (getAmountNeighboursThatAreMines(i, j) == 0) {
-                getImageView(i, j).setImage(fields[0]);
-                setCovered(i, j, false);
+                game[i][j].getImageView().setImage(detonatedMine);
+                game[i][j].setCovered(false);
+            } else if (game[i][j].getAmountNeighboursThatAreMines() == 0) {
+                game[i][j].getImageView().setImage(fields[0]);
+                game[i][j].setCovered(false);
                 fieldsToUncover--;
                 uncoverNeighbours(i, j);
             } else {
-                getImageView(i, j).setImage(fields[getAmountNeighboursThatAreMines(i, j)]);
-                setCovered(i, j, false);
+                game[i][j].getImageView().setImage(fields[game[i][j].getAmountNeighboursThatAreMines()]);
+                game[i][j].setCovered(false);
                 fieldsToUncover--;
             }
         }
@@ -437,13 +435,13 @@ public class Game {
 
     private void flag(int i, int j) {
 
-        if (!isFlagged(i, j) && isCovered(i, j)) {
-            getImageView(i, j).setImage(flag);
-            setFlagged(i, j, true);
+        if (!game[i][j].isFlagged() && game[i][j].isCovered()) {
+            game[i][j].getImageView().setImage(flag);
+            game[i][j].setFlagged(true);
             flagsLeft--;
-        } else if (isFlagged(i, j)) {
-            getImageView(i, j).setImage(field);
-            setFlagged(i, j, false);
+        } else if (game[i][j].isFlagged()) {
+            game[i][j].getImageView().setImage(field);
+            game[i][j].setFlagged(false);
             flagsLeft++;
         }
         update();
@@ -464,45 +462,5 @@ public class Game {
             digit5.setImage(digits[(time / 10) % 10]);
             digit6.setImage(digits[time % 10]);
         } catch (ArrayIndexOutOfBoundsException ignore) {}
-    }
-
-    private boolean isMine(int i, int j) {
-        return game.get(i).get(j).isMine();
-    }
-
-    private void setMine(int i, int j, boolean value) {
-        game.get(i).get(j).setMine(value);
-    }
-
-    private boolean isFlagged(int i, int j) {
-        return game.get(i).get(j).isFlagged();
-    }
-
-    private void setFlagged(int i, int j, boolean value) {
-        game.get(i).get(j).setFlagged(value);
-    }
-
-    private boolean isCovered(int i, int j) {
-        return game.get(i).get(j).isCovered();
-    }
-
-    private void setCovered(int i, int j, boolean value) {
-        game.get(i).get(j).setCovered(value);
-    }
-
-    private int getAmountNeighboursThatAreMines(int i, int j) {
-        return game.get(i).get(j).getAmountNeighboursThatAreMines();
-    }
-
-    private void setAmountNeighboursThatAreMines(int i, int j, int neighbours) {
-        game.get(i).get(j).setAmountNeighboursThatAreMines(neighbours);
-    }
-
-    private ImageView getImageView(int i, int j) {
-        return game.get(i).get(j).getImageView();
-    }
-
-    private void setImageView(int i, int j, ImageView imageView) {
-        game.get(i).get(j).setImageView(imageView);
     }
 }
