@@ -6,15 +6,15 @@ public class Field{
     private boolean isMine;
     private boolean isFlagged;
     private boolean isCovered;
-    private int amountNeighbours;
-    public ImageView image;
+    private int amountNeighboursThatAreMines;
+    private ImageView imageView;
 
     public boolean isMine() {
         return isMine;
     }
 
     public void setMine(boolean mine) {
-        isMine = mine;
+        this.isMine = mine;
     }
 
     public boolean isFlagged() {
@@ -22,15 +22,7 @@ public class Field{
     }
 
     public void setFlagged(boolean flagged) {
-        isFlagged = flagged;
-    }
-
-    public int getAmountNeighbours() {
-        return amountNeighbours;
-    }
-
-    public void setAmountNeighbours(int amountNeighbours) {
-        this.amountNeighbours = amountNeighbours;
+        this.isFlagged = flagged;
     }
 
     public boolean isCovered() {
@@ -38,6 +30,22 @@ public class Field{
     }
 
     public void setCovered(boolean covered) {
-        isCovered = covered;
+        this.isCovered = covered;
+    }
+
+    public int getAmountNeighboursThatAreMines() {
+        return amountNeighboursThatAreMines;
+    }
+
+    public void setAmountNeighboursThatAreMines(int amountNeighboursThatAreMines) {
+        this.amountNeighboursThatAreMines = amountNeighboursThatAreMines;
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
     }
 }
