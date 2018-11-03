@@ -307,37 +307,37 @@ public class Game {
             do {
                 x = random.nextInt(this.width);
                 y = random.nextInt(this.height);
-            } while (validateMineLocation(x, y, mouseX, mouseY));
+            } while (!isAValidMineLocation(x, y, mouseX, mouseY));
             game[x][y].setMine(true);
             for (int[] neighbour : neighbours) {
                 try {
                     game[x + neighbour[0]][y + neighbour[1]].setAmountNeighboursThatAreMines(game[x + neighbour[0]][y + neighbour[1]].getAmountNeighboursThatAreMines() + 1);
-                } catch (IndexOutOfBoundsException ignored) {}
+                } catch (ArrayIndexOutOfBoundsException ignore) {}
             }
         }
     }
 
-    private boolean validateMineLocation(int x, int y, int mouseX, int mouseY) {
+    private boolean isAValidMineLocation(int x, int y, int mouseX, int mouseY) {
         if (game[x][y].isMine()) {
-            return true;
+            return false;
         }
 
         if (x == mouseX && y == mouseY) {
-            return true;
+            return false;
         }
 
         if (fieldsToUncover < 9) {
-            return false;
+            return true;
         }
 
         for (int[] neighbour : neighbours) {
             try {
                 if (x == mouseX + neighbour[0] && y == mouseY + neighbour[1]) {
-                    return true;
+                    return false;
                 }
-            } catch (IndexOutOfBoundsException ignored) {}
+            } catch (ArrayIndexOutOfBoundsException ignore) {}
         }
-        return false;
+        return true;
     }
 
     private void mouseEventHandler(MouseButton button, int x, int y) {
@@ -366,7 +366,7 @@ public class Game {
                 if (game[x + neighbour[0]][y + neighbour[1]].isFlagged()) {
                     amount++;
                 }
-            } catch (IndexOutOfBoundsException ignored) {}
+            } catch (ArrayIndexOutOfBoundsException ignore) {}
         }
         return amount;
     }
@@ -428,7 +428,7 @@ public class Game {
         for (int[] neighbour : neighbours) {
             try {
                 uncover(x + neighbour[0], y + neighbour[1]);
-            } catch (IndexOutOfBoundsException ignored) {}
+            } catch (ArrayIndexOutOfBoundsException ignore) {}
         }
     }
 
