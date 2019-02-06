@@ -350,11 +350,55 @@ public class Game {
                     flag(x, y);
                     break;
                 case MIDDLE:
-                    if (countFlaggedNeighbours(x, y) == game[x][y].getAmountNeighboursThatAreMines() && !game[x][y].isCovered()) {
-                        uncoverNeighbours(x, y);
-                    }
+                    uncoverNeighbours(x, y);
                     break;
                 default:
+            }
+        }
+    }
+
+    private void uncover(int x, int y) {
+        if (game[x][y].isCovered() && !game[x][y].isFlagged()) {
+            if (game[x][y].isMine()) {
+                lose();
+                game[x][y].getImageView().setImage(detonatedMine);
+                game[x][y].setCovered(false);
+            } else if (game[x][y].getAmountNeighboursThatAreMines() == 0) {
+                game[x][y].getImageView().setImage(fields[0]);
+                game[x][y].setCovered(false);
+                fieldsToUncover--;
+                uncoverNeighbours(x, y);
+            } else {
+                game[x][y].getImageView().setImage(fields[game[x][y].getAmountNeighboursThatAreMines()]);
+                game[x][y].setCovered(false);
+                fieldsToUncover--;
+            }
+        }
+
+        if (fieldsToUncover == 0) {
+            win();
+        }
+    }
+
+    private void flag(int x, int y) {
+        if (!game[x][y].isFlagged() && game[x][y].isCovered()) {
+            game[x][y].getImageView().setImage(flag);
+            game[x][y].setFlagged(true);
+            flagsLeft--;
+        } else if (game[x][y].isFlagged()) {
+            game[x][y].getImageView().setImage(field);
+            game[x][y].setFlagged(false);
+            flagsLeft++;
+        }
+        update();
+    }
+
+    private void uncoverNeighbours(int x, int y) {
+        if (countFlaggedNeighbours(x, y) == game[x][y].getAmountNeighboursThatAreMines() && !game[x][y].isCovered()) {
+            for (int[] neighbour : neighbours) {
+                try {
+                    uncover(x + neighbour[0], y + neighbour[1]);
+                } catch (ArrayIndexOutOfBoundsException ignore) {}
             }
         }
     }
@@ -399,50 +443,6 @@ public class Game {
 
         isRunning = false;
         restartButton.setImage(won);
-    }
-
-    private void uncover(int x, int y) {
-        if (game[x][y].isCovered() && !game[x][y].isFlagged()) {
-            if (game[x][y].isMine()) {
-                lose();
-                game[x][y].getImageView().setImage(detonatedMine);
-                game[x][y].setCovered(false);
-            } else if (game[x][y].getAmountNeighboursThatAreMines() == 0) {
-                game[x][y].getImageView().setImage(fields[0]);
-                game[x][y].setCovered(false);
-                fieldsToUncover--;
-                uncoverNeighbours(x, y);
-            } else {
-                game[x][y].getImageView().setImage(fields[game[x][y].getAmountNeighboursThatAreMines()]);
-                game[x][y].setCovered(false);
-                fieldsToUncover--;
-            }
-        }
-
-        if (fieldsToUncover == 0) {
-            win();
-        }
-    }
-
-    private void uncoverNeighbours(int x, int y) {
-        for (int[] neighbour : neighbours) {
-            try {
-                uncover(x + neighbour[0], y + neighbour[1]);
-            } catch (ArrayIndexOutOfBoundsException ignore) {}
-        }
-    }
-
-    private void flag(int x, int y) {
-        if (!game[x][y].isFlagged() && game[x][y].isCovered()) {
-            game[x][y].getImageView().setImage(flag);
-            game[x][y].setFlagged(true);
-            flagsLeft--;
-        } else if (game[x][y].isFlagged()) {
-            game[x][y].getImageView().setImage(field);
-            game[x][y].setFlagged(false);
-            flagsLeft++;
-        }
-        update();
     }
 
     private void update() {
