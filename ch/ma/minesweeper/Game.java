@@ -72,13 +72,13 @@ public class Game {
             new Image(getClass().getResource("/images/digits/8.png").toExternalForm()),
             new Image(getClass().getResource("/images/digits/9.png").toExternalForm())
     };
-    private ImageView digit1;
-    private ImageView digit2;
-    private ImageView digit3;
+    private ImageView flagsDigit1;
+    private ImageView flagsDigit2;
+    private ImageView flagsDigit3;
 
-    private ImageView digit4;
-    private ImageView digit5;
-    private ImageView digit6;
+    private ImageView timerDigit1;
+    private ImageView timerDigit2;
+    private ImageView timerDigit3;
 
     private Timeline timer;
     private int time;
@@ -120,16 +120,16 @@ public class Game {
         });
 
         GridPane header = new GridPane();
-        header.add(digit1, 0, 0);
-        header.add(digit2, 1, 0);
-        header.add(digit3, 2, 0);
+        header.add(flagsDigit1, 0, 0);
+        header.add(flagsDigit2, 1, 0);
+        header.add(flagsDigit3, 2, 0);
         header.add(restartButton, 3, 0);
-        header.add(digit4, 4, 0);
-        header.add(digit5, 5, 0);
-        header.add(digit6, 6, 0);
-        update();
+        header.add(timerDigit1, 4, 0);
+        header.add(timerDigit2, 5, 0);
+        header.add(timerDigit3, 6, 0);
+        updateFlagsLeft();
 
-        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> timer()));
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateTimer()));
         timer.setCycleCount(999);
 
         root.setTop(header);
@@ -224,13 +224,13 @@ public class Game {
     }
 
     private void initializeHeader() {
-        digit1 = new ImageView(digits[0]);
-        digit2 = new ImageView(digits[0]);
-        digit3 = new ImageView(digits[0]);
+        flagsDigit1 = new ImageView(digits[0]);
+        flagsDigit2 = new ImageView(digits[0]);
+        flagsDigit3 = new ImageView(digits[0]);
 
-        digit4 = new ImageView(digits[0]);
-        digit5 = new ImageView(digits[0]);
-        digit6 = new ImageView(digits[0]);
+        timerDigit1 = new ImageView(digits[0]);
+        timerDigit2 = new ImageView(digits[0]);
+        timerDigit3 = new ImageView(digits[0]);
 
         restartButton = new ImageView(restart);
         restartButton.setOnMouseExited(event -> {
@@ -282,10 +282,10 @@ public class Game {
                 restartField(x, y);
             }
         }
-        update();
-        digit4.setImage(digits[0]);
-        digit5.setImage(digits[0]);
-        digit6.setImage(digits[0]);
+        updateFlagsLeft();
+        timerDigit1.setImage(digits[0]);
+        timerDigit2.setImage(digits[0]);
+        timerDigit3.setImage(digits[0]);
         firstClick = true;
         isRunning = true;
     }
@@ -390,7 +390,7 @@ public class Game {
             game[x][y].setFlagged(false);
             flagsLeft++;
         }
-        update();
+        updateFlagsLeft();
     }
 
     private void uncoverNeighbours(int x, int y) {
@@ -445,20 +445,20 @@ public class Game {
         restartButton.setImage(won);
     }
 
-    private void update() {
-        try {
-            digit1.setImage(digits[(flagsLeft / 100) % 10]);
-            digit2.setImage(digits[(flagsLeft / 10) % 10]);
-            digit3.setImage(digits[flagsLeft % 10]);
-        } catch (ArrayIndexOutOfBoundsException ignore) {}
+    private void updateFlagsLeft() {
+        updateDigits(flagsDigit1, flagsDigit2, flagsDigit3, flagsLeft);
     }
 
-    private void timer() {
+    private void updateTimer() {
         time++;
+        updateDigits(timerDigit1, timerDigit2, timerDigit3, time);
+    }
+
+    private void updateDigits(ImageView imageView1, ImageView imageView2, ImageView imageView3, int data) {
         try {
-            digit4.setImage(digits[(time / 100) % 10]);
-            digit5.setImage(digits[(time / 10) % 10]);
-            digit6.setImage(digits[time % 10]);
+            imageView1.setImage(digits[(data / 100) % 10]);
+            imageView2.setImage(digits[(data / 10) % 10]);
+            imageView3.setImage(digits[data % 10]);
         } catch (ArrayIndexOutOfBoundsException ignore) {}
     }
 }
