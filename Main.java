@@ -1,5 +1,3 @@
-package ch.ma.minesweeper;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -1,5 +1,3 @@
-package ch.ma.minesweeper;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;

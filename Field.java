@@ -1,5 +1,3 @@
-package ch.ma.minesweeper;
-
 import javafx.scene.image.ImageView;
 
 public class Field{

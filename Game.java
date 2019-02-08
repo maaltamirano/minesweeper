@@ -1,5 +1,3 @@
-package ch.ma.minesweeper;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
