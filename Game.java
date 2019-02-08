@@ -9,6 +9,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -88,21 +90,25 @@ public class Game {
     }
 
     public void start() {
-        Stage gameStage = new Stage();
-        BorderPane root = new BorderPane();
+        VBox root = new VBox();
+
         Scene scene = new Scene(root);
         scene.addEventFilter(MouseEvent.DRAG_DETECTED , mouseEvent -> scene.startFullDrag());
 
         initialize();
 
-        GridPane gridpane = new GridPane();
-        for (int x = 0; x < this.width; x++) {
-            for (int y = 0; y < this.height; y++) {
-                gridpane.add(game[x][y].getImageView(), x, y);
-            }
-        }
-
         initializeHeader();
+
+        HBox flagsDigits = new HBox();
+        flagsDigits.getChildren().addAll(flagsDigit1, flagsDigit2, flagsDigit3);
+        HBox timerDigits = new HBox();
+        timerDigits.getChildren().addAll(timerDigit1, timerDigit2, timerDigit3);
+        BorderPane header = new BorderPane();
+        header.setLeft(flagsDigits);
+
+        updateFlagsLeft();
+
+        header.setCenter(restartButton);
 
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.R) {
@@ -117,21 +123,21 @@ public class Game {
             }
         });
 
-        GridPane header = new GridPane();
-        header.add(flagsDigit1, 0, 0);
-        header.add(flagsDigit2, 1, 0);
-        header.add(flagsDigit3, 2, 0);
-        header.add(restartButton, 3, 0);
-        header.add(timerDigit1, 4, 0);
-        header.add(timerDigit2, 5, 0);
-        header.add(timerDigit3, 6, 0);
-        updateFlagsLeft();
+        header.setRight(timerDigits);
+
+        GridPane gridpane = new GridPane();
+        for (int x = 0; x < this.width; x++) {
+            for (int y = 0; y < this.height; y++) {
+                gridpane.add(game[x][y].getImageView(), x, y);
+            }
+        }
+
+        root.getChildren().addAll(header, gridpane);
 
         timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateTimer()));
         timer.setCycleCount(999);
 
-        root.setTop(header);
-        root.setCenter(gridpane);
+        Stage gameStage = new Stage();
         gameStage.getIcons().add(new Image(getClass().getResource("/images/4x/restart.png").toExternalForm()));
         gameStage.setTitle("Minesweeper");
         gameStage.resizableProperty().setValue(false);
