@@ -1,6 +1,7 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,7 +39,6 @@ public class Game {
             {1, 0},
             {1, 1}
     };
-    private ImageView restartButton;
     private Image restart = new Image(getClass().getResource("/images/2x/restart.png").toExternalForm());
     private Image restartO = new Image(getClass().getResource("/images/2x/restartO.png").toExternalForm());
     private Image restartPressed = new Image(getClass().getResource("/images/2x/pressedRestart.png").toExternalForm());
@@ -72,13 +72,23 @@ public class Game {
             new Image(getClass().getResource("/images/digits/8.png").toExternalForm()),
             new Image(getClass().getResource("/images/digits/9.png").toExternalForm())
     };
-    private ImageView flagsDigit1;
-    private ImageView flagsDigit2;
-    private ImageView flagsDigit3;
 
-    private ImageView timerDigit1;
-    private ImageView timerDigit2;
-    private ImageView timerDigit3;
+    @FXML
+    ImageView restartButton;
+
+    @FXML
+    ImageView flagsDigit1;
+    @FXML
+    ImageView flagsDigit2;
+    @FXML
+    ImageView flagsDigit3;
+
+    @FXML
+    ImageView timerDigit1;
+    @FXML
+    ImageView timerDigit2;
+    @FXML
+    ImageView timerDigit3;
 
     private Timeline timer;
     private int time;
@@ -90,10 +100,10 @@ public class Game {
     }
 
     public void start() {
-        VBox root = new VBox();
+//        VBox root = new VBox();
 
-        Scene scene = new Scene(root);
-        scene.addEventFilter(MouseEvent.DRAG_DETECTED , mouseEvent -> scene.startFullDrag());
+//        Scene scene = new Scene(root);
+//        scene.addEventFilter(MouseEvent.DRAG_DETECTED , mouseEvent -> scene.startFullDrag());
 
         initialize();
 
