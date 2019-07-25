@@ -6,86 +6,58 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Game">
-    <children>
-        <MenuBar>
-            <menus>
-                <Menu mnemonicParsing="false" text="Game">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Close" />
-                    </items>
-                </Menu>
-                    <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Delete" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-        <VBox>
-            <BorderPane>
-                <left>
-                    <HBox BorderPane.alignment="CENTER">
-                        <children>
-                            <ImageView fx:id="flagsDigit1" pickOnBounds="true" preserveRatio="true">
-                                <image>
-                                    <Image url="@../images/digits/0.png" />
-                                </image>
-                            </ImageView>
-                            <ImageView fx:id="flagsDigit2" pickOnBounds="true" preserveRatio="true">
-                                <image>
-                                    <Image url="@../images/digits/0.png" />
-                                </image>
-                            </ImageView>
-                            <ImageView fx:id="flagsDigit3" pickOnBounds="true" preserveRatio="true">
-                                <image>
-                                    <Image url="@../images/digits/0.png" />
-                                </image>
-                            </ImageView>
-                        </children>
-                    </HBox>
-                </left>
-                <right>
-                    <HBox BorderPane.alignment="CENTER">
-                        <children>
-                            <ImageView fx:id="timerDigit1" pickOnBounds="true" preserveRatio="true">
-                                <image>
-                                    <Image url="@../images/digits/0.png" />
-                                </image></ImageView>
-                            <ImageView fx:id="timerDigit2" pickOnBounds="true" preserveRatio="true">
-                                <image>
-                                    <Image url="@../images/digits/0.png" />
-                                </image>
-                            </ImageView>
-                            <ImageView fx:id="timerDigit3" pickOnBounds="true" preserveRatio="true">
-                                <image>
-                                    <Image url="@../images/digits/0.png" />
-                                </image>
-                            </ImageView>
-                        </children>
-                    </HBox>
-                </right>
-                <center>
-                    <ImageView fx:id="restartButton" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                        <image>
-                            <Image url="@../images/2x/restart.png" />
-                        </image>
+<VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.GameController">
+    <MenuBar>
+        <Menu mnemonicParsing="false" text="Game">
+            <MenuItem mnemonicParsing="false" text="Close"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+            <MenuItem mnemonicParsing="false" text="Delete"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem mnemonicParsing="false" text="About"/>
+        </Menu>
+    </MenuBar>
+    <VBox fx:id="gameVBox">
+        <BorderPane>
+            <left>
+                <HBox BorderPane.alignment="CENTER">
+                    <ImageView fx:id="flagsDigit1" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../images/digits/0.png"/>
                     </ImageView>
-                </center>
-            </BorderPane>
-            <GridPane>
-            </GridPane>
-        </VBox>
-   </children>
+                    <ImageView fx:id="flagsDigit2" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../images/digits/0.png"/>
+                    </ImageView>
+                    <ImageView fx:id="flagsDigit3" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../images/digits/0.png"/>
+                    </ImageView>
+                </HBox>
+            </left>
+            <right>
+                <HBox BorderPane.alignment="CENTER">
+                    <ImageView fx:id="timerDigit1" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../images/digits/0.png"/>
+                    </ImageView>
+                    <ImageView fx:id="timerDigit2" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../images/digits/0.png"/>
+                    </ImageView>
+                    <ImageView fx:id="timerDigit3" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../images/digits/0.png"/>
+                    </ImageView>
+                </HBox>
+            </right>
+            <center>
+                <ImageView fx:id="restartButton" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                    <Image url="@../images/2x/restart.png"/>
+                </ImageView>
+            </center>
+        </BorderPane>
+        <GridPane fx:id="gameGridPane">
+        </GridPane>
+    </VBox>
 </VBox>

@@ -35,7 +35,7 @@
     <Text text="99" GridPane.columnIndex="3" GridPane.rowIndex="3" />
     <TextField fx:id="mines" GridPane.columnIndex="3" GridPane.rowIndex="4" text="145"/>
     <Text fx:id="error" style="-fx-fill: red" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-    <Button onAction="#start" text="Start Game" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+    <Button onAction="#start" text="Start controllers.GameController" GridPane.columnIndex="3" GridPane.rowIndex="5" />
    <columnConstraints>
       <ColumnConstraints />
       <ColumnConstraints minWidth="10.0" prefWidth="100.0" />

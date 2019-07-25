@@ -1,23 +1,23 @@
+package controllers;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.Random;
 
-public class Game {
+import models.*;
+
+public class GameController {
     private Field[][] game;
     private boolean isRunning;
     private boolean mouseDrag = false;
@@ -74,6 +74,12 @@ public class Game {
     };
 
     @FXML
+    VBox gameVBox;
+
+    @FXML
+    GridPane gameGridPane;
+
+    @FXML
     ImageView restartButton;
 
     @FXML
@@ -93,77 +99,47 @@ public class Game {
     private Timeline timer;
     private int time;
 
-    public Game(int mines, int width, int height) {
-        this.mines = mines;
-        this.width = width;
-        this.height = height;
-    }
+    public void initialize() {
+        gameVBox.addEventFilter(MouseEvent.DRAG_DETECTED , mouseEvent -> gameVBox.startFullDrag());
+        mines = 10;
+        width = 8;
+        height = 8;
 
-    public void start() {
-//        VBox root = new VBox();
-
-//        Scene scene = new Scene(root);
-        scene.addEventFilter(MouseEvent.DRAG_DETECTED , mouseEvent -> scene.startFullDrag());
-
-        initialize();
+        initializeGameField();
 
         initializeHeader();
 
-        HBox flagsDigits = new HBox();
-        flagsDigits.getChildren().addAll(flagsDigit1, flagsDigit2, flagsDigit3);
-        HBox timerDigits = new HBox();
-        timerDigits.getChildren().addAll(timerDigit1, timerDigit2, timerDigit3);
-        BorderPane header = new BorderPane();
-        header.setLeft(flagsDigits);
-
-        updateFlagsLeft();
-
-        header.setCenter(restartButton);
-
-        scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.R) {
-                restartButton.setImage(restartPressed);
-            }
-        });
-
-        scene.setOnKeyReleased(e -> {
-            if (e.getCode() == KeyCode.R) {
-                restartButton.setImage(restart);
-                restart();
-            }
-        });
-
-        header.setRight(timerDigits);
-
-        GridPane gridpane = new GridPane();
-        for (int x = 0; x < this.width; x++) {
-            for (int y = 0; y < this.height; y++) {
-                gridpane.add(game[x][y].getImageView(), x, y);
-            }
-        }
-
-        root.getChildren().addAll(header, gridpane);
-
         timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateTimer()));
         timer.setCycleCount(999);
-
-        Stage gameStage = new Stage();
-        gameStage.getIcons().add(new Image(getClass().getResource("/images/4x/restart.png").toExternalForm()));
-        gameStage.setTitle("Minesweeper");
-        gameStage.resizableProperty().setValue(false);
-        gameStage.setScene(scene);
-        gameStage.show();
     }
 
-    private void initialize() {
+    private void initializeGameField() {
         fieldsToUncover = height * width - mines;
         flagsLeft = mines;
         game = new Field[width][height];
-        for (int x = 0; x < this.width; x++) {
-            for (int y = 0; y < this.height; y++) {
+
+        // Remove the already existing rows and columns of the GridPane
+        gameGridPane.getChildren().removeAll(gameGridPane.getChildren());
+
+        // Add the columns
+        for (int i = 0; i < width; i++) {
+            gameGridPane.addColumn(i);
+        }
+
+        // Add the rows
+        for (int i = 0; i < height; i++) {
+            gameGridPane.addRow(i);
+        }
+
+        // Initialize the fields
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 initializeField(x, y);
+                gameGridPane.add(game[x][y].getImageView(), x, y);
             }
         }
+
+        updateFlagsLeft();
         isRunning = true;
     }
 
@@ -233,19 +209,9 @@ public class Game {
                 mouseEventHandler(event.getButton(), x, y);
             }
         });
-
     }
 
     private void initializeHeader() {
-        flagsDigit1 = new ImageView(digits[0]);
-        flagsDigit2 = new ImageView(digits[0]);
-        flagsDigit3 = new ImageView(digits[0]);
-
-        timerDigit1 = new ImageView(digits[0]);
-        timerDigit2 = new ImageView(digits[0]);
-        timerDigit3 = new ImageView(digits[0]);
-
-        restartButton = new ImageView(restart);
         restartButton.setOnMouseExited(event -> {
             if (isRunning) {
                 overRestartButton = false;
@@ -278,6 +244,18 @@ public class Game {
             restartButton.setImage(restart);
             overRestartButton = false;
         });
+
+        gameVBox.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.R) {
+                restartButton.setImage(restartPressed);
+            }
+        });
+        gameVBox.setOnKeyReleased(e -> {
+            if (e.getCode() == KeyCode.R) {
+                restartButton.setImage(restart);
+                restart();
+            }
+        });
     }
 
     private void firstClick(int x, int y) {
@@ -287,20 +265,21 @@ public class Game {
     }
 
     private void restart() {
-        timer.stop();
-        fieldsToUncover = height * width - mines;
-        flagsLeft = mines;
-        for (int x = 0; x < this.width; x++) {
-            for (int y = 0; y < this.height; y++) {
-                restartField(x, y);
-            }
-        }
-        updateFlagsLeft();
-        timerDigit1.setImage(digits[0]);
-        timerDigit2.setImage(digits[0]);
-        timerDigit3.setImage(digits[0]);
-        firstClick = true;
-        isRunning = true;
+        initializeGameField();
+//        timer.stop();
+//        fieldsToUncover = height * width - mines;
+//        flagsLeft = mines;
+//        for (int x = 0; x < width; x++) {
+//            for (int y = 0; y < height; y++) {
+//                restartField(x, y);
+//            }
+//        }
+//        updateFlagsLeft();
+//        timerDigit1.setImage(digits[0]);
+//        timerDigit2.setImage(digits[0]);
+//        timerDigit3.setImage(digits[0]);
+//        firstClick = true;
+//        isRunning = true;
     }
 
     private void restartField(int x, int y) {
@@ -315,10 +294,10 @@ public class Game {
         int x;
         int y;
 
-        for (int i = 0; i < this.mines; i++) {
+        for (int i = 0; i < mines; i++) {
             do {
-                x = random.nextInt(this.width);
-                y = random.nextInt(this.height);
+                x = random.nextInt(width);
+                y = random.nextInt(height);
             } while (!isAValidMineLocation(x, y, mouseX, mouseY));
             game[x][y].setMine(true);
             for (int[] neighbour : neighbours) {
@@ -426,8 +405,8 @@ public class Game {
 
     private void win() {
         timer.stop();
-        for (int x = 0; x < this.width; x++) {
-            for (int y = 0; y < this.height; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 if (game[x][y].isMine() && game[x][y].getFieldState() == State.COVERED) {
                     flag(x, y);
                 }
@@ -440,8 +419,8 @@ public class Game {
 
     private void lose() {
         timer.stop();
-        for (int x = 0; x < this.width; x++) {
-            for (int y = 0; y < this.height; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 if (game[x][y].isMine() && game[x][y].getFieldState() == State.COVERED) {
                     game[x][y].getImageView().setImage(mine);
                 } else if (!game[x][y].isMine() && game[x][y].getFieldState() == State.FLAGGED) {
@@ -459,8 +438,7 @@ public class Game {
     }
 
     private void updateTimer() {
-        time++;
-        updateDigits(timerDigit1, timerDigit2, timerDigit3, time);
+        updateDigits(timerDigit1, timerDigit2, timerDigit3, ++time);
     }
 
     private void updateDigits(ImageView imageView1, ImageView imageView2, ImageView imageView3, int data) {
