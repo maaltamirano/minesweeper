@@ -13,70 +13,79 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Game">
-   <children>
-      <MenuBar>
-        <menus>
-          <Menu mnemonicParsing="false" text="Game">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <BorderPane>
-         <left>
-            <HBox BorderPane.alignment="CENTER">
-               <children>
-                  <ImageView fx:id="flagsDigit1" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/digits/0.png" />
-                     </image></ImageView>
-                  <ImageView fx:id="flagsDigit2" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/digits/0.png" />
-                     </image></ImageView>
-                  <ImageView fx:id="flagsDigit3" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/digits/0.png" />
-                     </image></ImageView>
-               </children>
-            </HBox>
-         </left>
-         <right>
-            <HBox BorderPane.alignment="CENTER">
-               <children>
-                  <ImageView fx:id="timerDigit1" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/digits/0.png" />
-                     </image></ImageView>
-                  <ImageView fx:id="timerDigit2" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/digits/0.png" />
-                     </image></ImageView>
-                  <ImageView fx:id="timerDigit3" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/digits/0.png" />
-                     </image></ImageView>
-               </children>
-            </HBox>
-         </right>
-         <center>
-            <ImageView fx:id="restartButton" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-               <image>
-                  <Image url="@../images/2x/restart.png" />
-               </image></ImageView>
-         </center></BorderPane>
-      <GridPane>
-      </GridPane>
+    <children>
+        <MenuBar>
+            <menus>
+                <Menu mnemonicParsing="false" text="Game">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                    </items>
+                </Menu>
+                    <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <VBox>
+            <BorderPane>
+                <left>
+                    <HBox BorderPane.alignment="CENTER">
+                        <children>
+                            <ImageView fx:id="flagsDigit1" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../images/digits/0.png" />
+                                </image>
+                            </ImageView>
+                            <ImageView fx:id="flagsDigit2" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../images/digits/0.png" />
+                                </image>
+                            </ImageView>
+                            <ImageView fx:id="flagsDigit3" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../images/digits/0.png" />
+                                </image>
+                            </ImageView>
+                        </children>
+                    </HBox>
+                </left>
+                <right>
+                    <HBox BorderPane.alignment="CENTER">
+                        <children>
+                            <ImageView fx:id="timerDigit1" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../images/digits/0.png" />
+                                </image></ImageView>
+                            <ImageView fx:id="timerDigit2" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../images/digits/0.png" />
+                                </image>
+                            </ImageView>
+                            <ImageView fx:id="timerDigit3" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@../images/digits/0.png" />
+                                </image>
+                            </ImageView>
+                        </children>
+                    </HBox>
+                </right>
+                <center>
+                    <ImageView fx:id="restartButton" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                        <image>
+                            <Image url="@../images/2x/restart.png" />
+                        </image>
+                    </ImageView>
+                </center>
+            </BorderPane>
+            <GridPane>
+            </GridPane>
+        </VBox>
    </children>
 </VBox>

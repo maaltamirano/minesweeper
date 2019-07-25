@@ -11,7 +11,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("views/gameView.fxml"));
-        root.addEventFilter(MouseEvent.DRAG_DETECTED , mouseEvent -> root.startFullDrag());
         primaryStage.getIcons().add(new Image(getClass().getResource("/images/4x/restart.png").toExternalForm()));
         primaryStage.setTitle("Minesweeper");
         primaryStage.resizableProperty().setValue(false);

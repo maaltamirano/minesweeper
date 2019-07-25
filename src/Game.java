@@ -103,7 +103,7 @@ public class Game {
 //        VBox root = new VBox();
 
 //        Scene scene = new Scene(root);
-//        scene.addEventFilter(MouseEvent.DRAG_DETECTED , mouseEvent -> scene.startFullDrag());
+        scene.addEventFilter(MouseEvent.DRAG_DETECTED , mouseEvent -> scene.startFullDrag());
 
         initialize();
 
