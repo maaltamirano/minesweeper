@@ -20,10 +20,10 @@ import models.*;
 public class GameController {
     private Field[][] game;
     private boolean isRunning;
-    private boolean mouseDrag = false;
-    private boolean firstClick = true;
-    private boolean overField = false;
-    private boolean overRestartButton = false;
+    private boolean mouseDrag;
+    private boolean firstClick;
+    private boolean overField;
+    private boolean overRestartButton;
     private int mines;
     private int width;
     private int height;
@@ -107,7 +107,7 @@ public class GameController {
 
         initializeGameField();
 
-        initializeHeader();
+        setRestartButtonFunctions();
 
         timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateTimer()));
         timer.setCycleCount(999);
@@ -140,6 +140,11 @@ public class GameController {
         }
 
         updateFlagsLeft();
+
+        firstClick = true;
+        mouseDrag = false;
+        overField = false;
+        overRestartButton = false;
         isRunning = true;
     }
 
@@ -211,7 +216,7 @@ public class GameController {
         });
     }
 
-    private void initializeHeader() {
+    private void setRestartButtonFunctions() {
         restartButton.setOnMouseExited(event -> {
             if (isRunning) {
                 overRestartButton = false;
@@ -265,28 +270,11 @@ public class GameController {
     }
 
     private void restart() {
+        timer.stop();
+        timerDigit1.setImage(digits[0]);
+        timerDigit2.setImage(digits[0]);
+        timerDigit3.setImage(digits[0]);
         initializeGameField();
-//        timer.stop();
-//        fieldsToUncover = height * width - mines;
-//        flagsLeft = mines;
-//        for (int x = 0; x < width; x++) {
-//            for (int y = 0; y < height; y++) {
-//                restartField(x, y);
-//            }
-//        }
-//        updateFlagsLeft();
-//        timerDigit1.setImage(digits[0]);
-//        timerDigit2.setImage(digits[0]);
-//        timerDigit3.setImage(digits[0]);
-//        firstClick = true;
-//        isRunning = true;
-    }
-
-    private void restartField(int x, int y) {
-        game[x][y].setMine(false);
-        game[x][y].setFieldState(State.COVERED);
-        game[x][y].setAmountNeighboursThatAreMines(0);
-        game[x][y].getImageView().setImage(field);
     }
 
     private void setMines(int mouseX, int mouseY) {
