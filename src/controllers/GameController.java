@@ -101,11 +101,8 @@ public class GameController {
 
     public void initialize() {
         gameVBox.addEventFilter(MouseEvent.DRAG_DETECTED , mouseEvent -> gameVBox.startFullDrag());
-        mines = 10;
-        width = 8;
-        height = 8;
 
-        initializeGameField();
+        startBeginner();
 
         setRestartButtonFunctions();
 
@@ -113,8 +110,32 @@ public class GameController {
         timer.setCycleCount(999);
     }
 
+    // TODO: Automatically resize screen
+    public void startBeginner() {
+        onParametersChanged(8, 8, 10);
+    }
+
+    public void startIntermediate() {
+        onParametersChanged(16, 16, 40);
+    }
+
+    public void startExpert() {
+        onParametersChanged(24, 24, 99);
+    }
+
+    public void startCustom() {
+        //TODO: Implement
+    }
+
+    private void onParametersChanged(int width, int height, int mines) {
+        this.width = width;
+        this.height = height;
+        this.mines = mines;
+        restart();
+    }
+
     private void initializeGameField() {
-        fieldsToUncover = height * width - mines;
+        fieldsToUncover = width * height - mines;
         flagsLeft = mines;
         game = new Field[width][height];
 
@@ -270,10 +291,12 @@ public class GameController {
     }
 
     private void restart() {
-        timer.stop();
-        timerDigit1.setImage(digits[0]);
-        timerDigit2.setImage(digits[0]);
-        timerDigit3.setImage(digits[0]);
+        if (timer != null) {
+            timer.stop();
+            timerDigit1.setImage(digits[0]);
+            timerDigit2.setImage(digits[0]);
+            timerDigit3.setImage(digits[0]);
+        }
         initializeGameField();
     }
 
