@@ -1,31 +1,22 @@
 import javafx.application.Application;
-import javafx.beans.InvalidationListener;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // TODO: When increasing window size menu bar doesn't change
         VBox root = FXMLLoader.load(getClass().getResource("views/gameView.fxml"));
         Scene scene = new Scene(root);
         primaryStage.getIcons().add(new Image(getClass().getResource("/images/4x/restart.png").toExternalForm()));
 
-        ((GridPane) ((VBox) root.getChildren().get(1)).getChildren().get(1)).heightProperty().addListener(observable -> {
-            Window window = scene.getWindow();
-
-            if (window != null) {
-                window.sizeToScene();
-            }
+        ((GridPane)scene.lookup("#gameGridPane")).heightProperty().addListener(observable -> {
+            Platform.runLater(primaryStage::sizeToScene);
         });
 
         primaryStage.setTitle("Minesweeper");
