@@ -5,8 +5,14 @@ import javafx.scene.image.ImageView;
 public class Field {
     private boolean isMine;
     private State fieldState;
-    private int amountNeighboursThatAreMines;
+    private int numberOfNeighboursThatAreMines;
     private ImageView imageView;
+
+    public Field() {
+        isMine = false;
+        fieldState = State.COVERED;
+        numberOfNeighboursThatAreMines = 0;
+    }
 
     public boolean isMine() {
         return isMine;
@@ -24,12 +30,12 @@ public class Field {
         this.fieldState = fieldState;
     }
 
-    public int getAmountNeighboursThatAreMines() {
-        return amountNeighboursThatAreMines;
+    public int getNumberOfNeighboursThatAreMines() {
+        return numberOfNeighboursThatAreMines;
     }
 
-    public void setAmountNeighboursThatAreMines(int amountNeighboursThatAreMines) {
-        this.amountNeighboursThatAreMines = amountNeighboursThatAreMines;
+    public void increaseNumberOfNeighboursThatAreMines() {
+        numberOfNeighboursThatAreMines++;
     }
 
     public ImageView getImageView() {
