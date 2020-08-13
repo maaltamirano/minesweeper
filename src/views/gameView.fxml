@@ -10,7 +10,7 @@
          <MenuItem mnemonicParsing="false" onAction="#startBeginner" text="Beginner" />
          <MenuItem mnemonicParsing="false" onAction="#startIntermediate" text="Intermediate" />
          <MenuItem mnemonicParsing="false" onAction="#startExpert" text="Expert" />
-         <MenuItem mnemonicParsing="false" text="Custom..." />
+         <MenuItem mnemonicParsing="false" onAction="#startCustom" text="Custom..." />
          <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" text="Exit" />
         </Menu>

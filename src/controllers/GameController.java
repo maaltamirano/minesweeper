@@ -4,6 +4,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -11,8 +13,11 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.Random;
 
 import models.*;
@@ -94,28 +99,51 @@ public class GameController {
     public void initialize() {
         gameVBox.addEventFilter(MouseEvent.DRAG_DETECTED , mouseEvent -> gameVBox.startFullDrag());
 
-        startBeginner();
-
         setRestartButtonFunctions();
 
         timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateTimer()));
         timer.setCycleCount(999);
+
+        startBeginner();
     }
 
     public void startBeginner() {
-        restart(8, 8, 10);
+        startGame(new Game(8, 8, 10));
     }
 
     public void startIntermediate() {
-        restart(16, 16, 40);
+        startGame(new Game(16, 16, 40));
     }
 
     public void startExpert() {
-        restart(30, 16, 99);
+        startGame(new Game(30, 16, 99));
     }
 
     public void startCustom() {
-        //TODO: Implement
+        Game game = showCustomGameDialogue();
+        if (game != null) {
+            startGame(game);
+        }
+    }
+
+    private Game showCustomGameDialogue() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/customGameDialogue.fxml"));
+            GridPane root = loader.load();
+
+            CustomGameController controller = loader.getController();
+
+            Stage stage = new Stage();
+            stage.setTitle("title");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+
+            stage.showAndWait();
+            return controller.getGame();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void initializeGameField() {
@@ -227,13 +255,13 @@ public class GameController {
         restartButton.setOnMouseReleased(event -> {
             restartButton.setImage(restart);
             if (overRestartButton) {
-                restart(game.getWidth(), game.getHeight(), game.getMines());
+                startGame(new Game(game.getWidth(), game.getHeight(), game.getMines()));
             }
         });
         restartButton.setOnMouseDragReleased(event -> {
             restartButton.setImage(restart);
             if (overRestartButton) {
-                restart(game.getWidth(), game.getHeight(), game.getMines());
+                startGame(new Game(game.getWidth(), game.getHeight(), game.getMines()));
             }
         });
         restartButton.setOnMouseDragEntered(event -> {
@@ -253,7 +281,7 @@ public class GameController {
         gameVBox.setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.R) {
                 restartButton.setImage(restart);
-                restart(game.getWidth(), game.getHeight(), game.getMines());
+                startGame(new Game(game.getWidth(), game.getHeight(), game.getMines()));
             }
         });
     }
@@ -263,14 +291,12 @@ public class GameController {
         timer.play();
     }
 
-    private void restart(int width, int height, int mines) {
-        game = new Game(width, height, mines);
-        if (timer != null) {
-            timer.stop();
-            timerDigit1.setImage(digits[0]);
-            timerDigit2.setImage(digits[0]);
-            timerDigit3.setImage(digits[0]);
-        }
+    private void startGame(Game game) {
+        this.game = game;
+        timer.stop();
+        timerDigit1.setImage(digits[0]);
+        timerDigit2.setImage(digits[0]);
+        timerDigit3.setImage(digits[0]);
         initializeGameField();
     }
 

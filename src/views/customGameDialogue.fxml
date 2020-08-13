@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CustomGameController">
+    <Text text="Width" GridPane.columnIndex="1" />
+    <Text text="Height" GridPane.columnIndex="2" />
+    <Text text="Mines" GridPane.columnIndex="3" />
+
+    <TextField fx:id="width" GridPane.columnIndex="1" GridPane.rowIndex="4" text="30"/>
+    <TextField fx:id="height" GridPane.columnIndex="2" GridPane.rowIndex="4" text="20"/>
+    <TextField fx:id="mines" GridPane.columnIndex="3" GridPane.rowIndex="4" text="145"/>
+    <Text fx:id="error" style="-fx-fill: red" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+    <Button onAction="#start" text="Start game" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+<!--   <columnConstraints>-->
+<!--      <ColumnConstraints />-->
+<!--      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />-->
+<!--      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />-->
+<!--      <ColumnConstraints minWidth="10.0" prefWidth="100.0" />-->
+<!--   </columnConstraints>-->
+<!--   <rowConstraints>-->
+<!--      <RowConstraints />-->
+<!--      <RowConstraints minHeight="10.0" prefHeight="30.0" />-->
+<!--      <RowConstraints minHeight="10.0" prefHeight="30.0" />-->
+<!--      <RowConstraints minHeight="10.0" prefHeight="30.0" />-->
+<!--      <RowConstraints minHeight="10.0" prefHeight="30.0" />-->
+<!--      <RowConstraints minHeight="10.0" prefHeight="30.0" />-->
+<!--   </rowConstraints>-->
+
+</GridPane>
