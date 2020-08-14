@@ -52,7 +52,7 @@ public class CustomGameController {
         }
     }
 
-    private void cancel() {
+    public void cancel() {
         game = null;
         ((Stage) width.getScene().getWindow()).close();
     }
