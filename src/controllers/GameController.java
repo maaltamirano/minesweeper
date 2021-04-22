@@ -129,7 +129,7 @@ public class GameController {
     private Game showCustomGameDialogue() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/customGameDialogue.fxml"));
-            GridPane root = loader.load();
+            VBox root = loader.load();
 
             CustomGameController controller = loader.getController();
 
