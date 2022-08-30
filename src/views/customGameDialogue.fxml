@@ -8,20 +8,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CustomGameController">
-    <HBox>
-        <GridPane alignment="center" hgap="10" vgap="10">
-            <Text text="Width:" GridPane.rowIndex="1" />
-            <Text text="Height:" GridPane.rowIndex="2" />
-            <Text text="Mines:" GridPane.rowIndex="3" />
+    <GridPane alignment="center" hgap="10" vgap="10">
+        <Text text="Width:" GridPane.rowIndex="1" />
+        <Text text="Height:" GridPane.rowIndex="2" />
+        <Text text="Mines:" GridPane.rowIndex="3" />
 
-            <TextField fx:id="width" GridPane.columnIndex="1" GridPane.rowIndex="1" text="30"/>
-            <TextField fx:id="height" GridPane.columnIndex="1" GridPane.rowIndex="2" text="20"/>
-            <TextField fx:id="mines" GridPane.columnIndex="1" GridPane.rowIndex="3" text="145"/>
-        </GridPane>
-        <VBox>
-            <Button onAction="#start" text="OK" />
-            <Button onAction="#cancel" text="Cancel" />
-        </VBox>
+        <TextField fx:id="width" GridPane.columnIndex="1" GridPane.rowIndex="1" text="30"/>
+        <TextField fx:id="height" GridPane.columnIndex="1" GridPane.rowIndex="2" text="20"/>
+        <TextField fx:id="mines" GridPane.columnIndex="1" GridPane.rowIndex="3" text="145"/>
+    </GridPane>
+    <HBox>
+        <Button onAction="#start" text="OK" />
+        <Button onAction="#cancel" text="Cancel" />
     </HBox>
     <Text fx:id="error" style="-fx-fill: red" GridPane.columnIndex="0" GridPane.rowIndex="5" />
 </VBox>
