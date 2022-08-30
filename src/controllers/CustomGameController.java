@@ -23,18 +23,15 @@ public class CustomGameController {
     Text error;
 
     public void start() {
-        boolean isValid = false;
-        int width = 0;
-        int height = 0;
-        int mines = 0;
-
         try {
-            width = Integer.parseInt(this.width.getText());
-            height = Integer.parseInt(this.height.getText());
-            mines = Integer.parseInt(this.mines.getText());
+            int width = Integer.parseInt(this.width.getText());
+            int height = Integer.parseInt(this.height.getText());
+            int mines = Integer.parseInt(this.mines.getText());
             if (mines < width * height) {
                 if (mines > 0 && width > 0 && height > 0) {
-                    isValid = true;
+                    error.setText("");
+                    game = new Game(width, height, mines);
+                    ((Stage) this.width.getScene().getWindow()).close();
                 } else {
                     error.setText("Invalid number");
                 }
@@ -43,12 +40,6 @@ public class CustomGameController {
             }
         } catch (NumberFormatException n) {
             error.setText("Not a number");
-        }
-
-        if (isValid) {
-            error.setText("");
-            game = new Game(width, height, mines);
-            ((Stage) this.width.getScene().getWindow()).close();
         }
     }
 
