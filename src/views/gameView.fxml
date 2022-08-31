@@ -7,11 +7,11 @@
 <VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GameController">
     <MenuBar>
         <Menu mnemonicParsing="false" text="Game">
-         <MenuItem mnemonicParsing="false" onAction="#startBeginner" text="Beginner" />
-         <MenuItem mnemonicParsing="false" onAction="#startIntermediate" text="Intermediate" />
-         <MenuItem mnemonicParsing="false" onAction="#startExpert" text="Expert" />
-         <MenuItem mnemonicParsing="false" onAction="#startCustom" text="Custom..." />
-         <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#startBeginner" text="Beginner" />
+            <MenuItem mnemonicParsing="false" onAction="#startIntermediate" text="Intermediate" />
+            <MenuItem mnemonicParsing="false" onAction="#startExpert" text="Expert" />
+            <MenuItem mnemonicParsing="false" onAction="#startCustom" text="Custom..." />
+            <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" text="Exit" />
         </Menu>
     </MenuBar>

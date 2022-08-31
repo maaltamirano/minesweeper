@@ -134,7 +134,8 @@ public class GameController {
             CustomGameController controller = loader.getController();
 
             Stage stage = new Stage();
-            stage.setTitle("title");
+            stage.setTitle("Custom Field");
+            stage.getIcons().add(new Image(getClass().getResource("/images/4x/restart.png").toExternalForm()));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
 
